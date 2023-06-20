@@ -20,7 +20,6 @@ import (
 	"bytes"
 	"encoding/binary"
 	"fmt"
-	"github.com/tomochain/tomochain/core/rawdb"
 	"math"
 	"math/big"
 	"math/rand"
@@ -28,6 +27,8 @@ import (
 	"strings"
 	"testing"
 	"testing/quick"
+
+	"github.com/tomochain/tomochain/core/rawdb"
 
 	check "gopkg.in/check.v1"
 
@@ -432,15 +433,14 @@ func (s *StateSuite) TestTouchDelete(c *check.C) {
 // TestCopyOfCopy tests that modified objects are carried over to the copy, and the copy of the copy.
 // See https://github.com/ethereum/go-ethereum/pull/15225#issuecomment-380191512
 func TestCopyOfCopy(t *testing.T) {
-	db, _ := ethdb.NewMemDatabase()
-	sdb, _ := New(common.Hash{}, NewDatabase(db))
+	state, _ := New(common.Hash{}, NewDatabase(rawdb.NewMemoryDatabase()))
 	addr := common.HexToAddress("aaaa")
-	sdb.SetBalance(addr, big.NewInt(42))
+	state.SetBalance(addr, big.NewInt(42))
 
-	if got := sdb.Copy().GetBalance(addr).Uint64(); got != 42 {
+	if got := state.Copy().GetBalance(addr).Uint64(); got != 42 {
 		t.Fatalf("1st copy fail, expected 42, got %v", got)
 	}
-	if got := sdb.Copy().Copy().GetBalance(addr).Uint64(); got != 42 {
+	if got := state.Copy().Copy().GetBalance(addr).Uint64(); got != 42 {
 		t.Fatalf("2nd copy fail, expected 42, got %v", got)
 	}
 }
