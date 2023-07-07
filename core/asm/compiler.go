@@ -52,7 +52,7 @@ func NewCompiler(debug bool) *Compiler {
 // the compiler.
 //
 // feed is the first pass in the compile stage as it
-// collect the used labels in the program and keeps a
+// collects the used labels in the program and keeps a
 // program counter which is used to determine the locations
 // of the jump dests. The labels can than be used in the
 // second stage to push labels and determine the right
@@ -121,7 +121,7 @@ func (c *Compiler) next() token {
 	return token
 }
 
-// compile line compiles a single line instruction e.g.
+// compileLine compiles a single line instruction e.g.
 // "push 1", "jump @label".
 func (c *Compiler) compileLine() error {
 	n := c.next()
@@ -237,12 +237,12 @@ func (c *Compiler) pushBin(v interface{}) {
 // isPush returns whether the string op is either any of
 // push(N).
 func isPush(op string) bool {
-	return op == "push"
+	return strings.ToUpper(op) == "PUSH"
 }
 
 // isJump returns whether the string op is jump(i)
 func isJump(op string) bool {
-	return op == "jumpi" || op == "jump"
+	return strings.ToUpper(op) == "JUMPI" || strings.ToUpper(op) == "JUMP"
 }
 
 // toBinary converts text to a vm.OpCode
