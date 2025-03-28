@@ -1,14 +1,14 @@
-package tradingstate
+// package tradingstate
 
-import (
-	"github.com/tomochain/tomochain/rlp"
-)
+// import (
+// 	"github.com/tomochain/tomochain/rlp"
+// )
 
-func EncodeBytesItem(val interface{}) ([]byte, error) {
-	return rlp.EncodeToBytes(val)
-}
+// func EncodeBytesItem(val interface{}) ([]byte, error) {
+// 	return rlp.EncodeToBytes(val)
+// }
 
-func DecodeBytesItem(bytes []byte, val interface{}) error {
-	return rlp.DecodeBytes(bytes, val)
+// func DecodeBytesItem(bytes []byte, val interface{}) error {
+// 	return rlp.DecodeBytes(bytes, val)
 
-}
+// }

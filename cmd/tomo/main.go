@@ -65,7 +65,7 @@ var (
 		//utils.EthashDatasetDirFlag,
 		//utils.EthashDatasetsInMemoryFlag,
 		//utils.EthashDatasetsOnDiskFlag,
-		utils.TomoXEnabledFlag,
+		// utils.TomoXEnabledFlag,
 		utils.TomoXDataDirFlag,
 		utils.TomoXDBEngineFlag,
 		utils.TomoXDBConnectionUrlFlag,

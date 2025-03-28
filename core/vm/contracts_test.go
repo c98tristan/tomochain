@@ -19,9 +19,10 @@ package vm
 import (
 	"bytes"
 	"fmt"
-	"github.com/tomochain/tomochain/core/rawdb"
+
 	"github.com/tomochain/tomochain/params"
-	"github.com/tomochain/tomochain/tomox/tradingstate"
+
+	// "github.com/tomochain/tomochain/tomox/tradingstate"
 	"math/big"
 	"reflect"
 	"testing"
@@ -499,28 +500,28 @@ func testPrecompiled(addr string, test precompiledTest, t *testing.T) {
 	})
 }
 
-func testTomoxPrecompiled(addr string, test precompiledTest, t *testing.T) {
-	db := rawdb.NewMemoryDatabase()
-	stateCache := tradingstate.NewDatabase(db)
-	tradingStateDB, _ := tradingstate.New(common.Hash{}, stateCache)
-	tradingStateDB.SetLastPrice(tradingstate.GetTradingOrderBookHash(common.HexToAddress(BTCAddress), common.HexToAddress(USDTAddress)), BTCUSDTLastPrice)
-	tradingStateDB.SetMediumPriceBeforeEpoch(tradingstate.GetTradingOrderBookHash(common.HexToAddress(BTCAddress), common.HexToAddress(USDTAddress)), BTCUSDTEpochPrice)
+// func testTomoxPrecompiled(addr string, test precompiledTest, t *testing.T) {
+// 	db := rawdb.NewMemoryDatabase()
+// 	stateCache := tradingstate.NewDatabase(db)
+// 	tradingStateDB, _ := tradingstate.New(common.Hash{}, stateCache)
+// 	tradingStateDB.SetLastPrice(tradingstate.GetTradingOrderBookHash(common.HexToAddress(BTCAddress), common.HexToAddress(USDTAddress)), BTCUSDTLastPrice)
+// 	tradingStateDB.SetMediumPriceBeforeEpoch(tradingstate.GetTradingOrderBookHash(common.HexToAddress(BTCAddress), common.HexToAddress(USDTAddress)), BTCUSDTEpochPrice)
 
-	evm := NewEVM(Context{BlockNumber: common.Big1}, nil, tradingStateDB, &params.ChainConfig{ByzantiumBlock: common.Big0}, Config{})
-	contractAddr := common.HexToAddress(addr)
-	p := PrecompiledContractsByzantium[contractAddr]
-	in := common.Hex2Bytes(test.input)
-	contract := NewContract(AccountRef(common.HexToAddress("1337")),
-		nil, new(big.Int), p.RequiredGas(in))
-	contract.SetCallCode(&contractAddr, common.Hash{}, []byte{})
-	t.Run(fmt.Sprintf("%s-Gas=%d", test.name, contract.Gas), func(t *testing.T) {
-		if res, err := run(evm, contract, in, false); err != nil {
-			t.Error(err)
-		} else if common.Bytes2Hex(res) != test.expected {
-			t.Errorf("Expected %v, got %v", test.expected, common.Bytes2Hex(res))
-		}
-	})
-}
+// 	evm := NewEVM(Context{BlockNumber: common.Big1}, nil /* tradingStateDB, */, &params.ChainConfig{ByzantiumBlock: common.Big0}, Config{})
+// 	contractAddr := common.HexToAddress(addr)
+// 	p := PrecompiledContractsByzantium[contractAddr]
+// 	in := common.Hex2Bytes(test.input)
+// 	contract := NewContract(AccountRef(common.HexToAddress("1337")),
+// 		nil, new(big.Int), p.RequiredGas(in))
+// 	contract.SetCallCode(&contractAddr, common.Hash{}, []byte{})
+// 	t.Run(fmt.Sprintf("%s-Gas=%d", test.name, contract.Gas), func(t *testing.T) {
+// 		if res, err := run(evm, contract, in, false); err != nil {
+// 			t.Error(err)
+// 		} else if common.Bytes2Hex(res) != test.expected {
+// 			t.Errorf("Expected %v, got %v", test.expected, common.Bytes2Hex(res))
+// 		}
+// 	})
+// }
 
 func testPrecompiledWithEmptyTradingState(addr string, test precompiledTest, t *testing.T) {
 	evm := NewEVM(Context{BlockNumber: common.Big1}, nil, nil, &params.ChainConfig{ByzantiumBlock: common.Big0}, Config{})

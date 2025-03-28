@@ -37,7 +37,8 @@ import (
 	"github.com/tomochain/tomochain/log"
 	"github.com/tomochain/tomochain/node"
 	"github.com/tomochain/tomochain/params"
-	"github.com/tomochain/tomochain/tomox"
+
+	// "github.com/tomochain/tomochain/tomox"
 	whisper "github.com/tomochain/tomochain/whisper/whisperv6"
 )
 
@@ -90,11 +91,11 @@ type Bootnodes struct {
 }
 
 type tomoConfig struct {
-	Eth         eth.Config
-	Shh         whisper.Config
-	Node        node.Config
-	Ethstats    ethstatsConfig
-	TomoX       tomox.Config
+	Eth      eth.Config
+	Shh      whisper.Config
+	Node     node.Config
+	Ethstats ethstatsConfig
+	// TomoX       tomox.Config
 	Account     account
 	StakeEnable bool
 	Bootnodes   Bootnodes
@@ -129,9 +130,9 @@ func defaultNodeConfig() node.Config {
 func makeConfigNode(ctx *cli.Context) (*node.Node, tomoConfig) {
 	// Load defaults.
 	cfg := tomoConfig{
-		Eth:         eth.DefaultConfig,
-		Shh:         whisper.DefaultConfig,
-		TomoX:       tomox.DefaultConfig,
+		Eth: eth.DefaultConfig,
+		Shh: whisper.DefaultConfig,
+		// TomoX:       tomox.DefaultConfig,
 		Node:        defaultNodeConfig(),
 		StakeEnable: true,
 		Verbosity:   3,
@@ -220,7 +221,7 @@ func makeConfigNode(ctx *cli.Context) (*node.Node, tomoConfig) {
 	}
 
 	utils.SetShhConfig(ctx, stack, &cfg.Shh)
-	utils.SetTomoXConfig(ctx, &cfg.TomoX, cfg.Node.DataDir)
+	// utils.SetTomoXConfig(ctx, &cfg.TomoX, cfg.Node.DataDir)
 	return stack, cfg
 }
 
@@ -252,7 +253,7 @@ func makeFullNode(ctx *cli.Context) (*node.Node, tomoConfig) {
 
 	// Register TomoX's OrderBook service if requested.
 	// enable in default
-	utils.RegisterTomoXService(stack, &cfg.TomoX)
+	// utils.RegisterTomoXService(stack, &cfg.TomoX)
 	utils.RegisterEthService(stack, &cfg.Eth)
 
 	// Whisper must be explicitly enabled by specifying at least 1 whisper flag or in dev mode

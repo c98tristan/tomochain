@@ -19,7 +19,6 @@ package miner
 
 import (
 	"fmt"
-	"github.com/tomochain/tomochain/tomoxlending"
 	"sync/atomic"
 
 	"github.com/tomochain/tomochain/accounts"
@@ -33,7 +32,6 @@ import (
 	"github.com/tomochain/tomochain/event"
 	"github.com/tomochain/tomochain/log"
 	"github.com/tomochain/tomochain/params"
-	"github.com/tomochain/tomochain/tomox"
 )
 
 // Backend wraps all methods required for mining.
@@ -42,10 +40,10 @@ type Backend interface {
 	BlockChain() *core.BlockChain
 	TxPool() *core.TxPool
 	ChainDb() ethdb.Database
-	GetTomoX() *tomox.TomoX
-	OrderPool() *core.OrderPool
-	LendingPool() *core.LendingPool
-	GetTomoXLending() *tomoxlending.Lending
+	// GetTomoX() *tomox.TomoX
+	// OrderPool() *core.OrderPool
+	// LendingPool() *core.LendingPool
+	// GetTomoXLending() *tomoxlending.Lending
 }
 
 // Miner creates blocks and searches for proof-of-work values.

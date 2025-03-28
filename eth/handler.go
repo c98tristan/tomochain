@@ -107,13 +107,13 @@ type ProtocolManager struct {
 }
 
 // NewProtocolManagerEx add order pool to protocol
-func NewProtocolManagerEx(config *params.ChainConfig, mode downloader.SyncMode, networkID uint64, mux *event.TypeMux, txpool txPool, orderpool orderPool, lendingpool lendingPool, engine consensus.Engine, blockchain *core.BlockChain, chaindb ethdb.Database) (*ProtocolManager, error) {
+func NewProtocolManagerEx(config *params.ChainConfig, mode downloader.SyncMode, networkID uint64, mux *event.TypeMux, txpool txPool /*orderpool orderPool, lendingpool lendingPool,*/, engine consensus.Engine, blockchain *core.BlockChain, chaindb ethdb.Database) (*ProtocolManager, error) {
 	protocol, err := NewProtocolManager(config, mode, networkID, mux, txpool, engine, blockchain, chaindb)
 	if err != nil {
 		return nil, err
 	}
-	protocol.addOrderPoolProtocol(orderpool)
-	protocol.addLendingPoolProtocol(lendingpool)
+	// protocol.addOrderPoolProtocol(orderpool)
+	// protocol.addLendingPoolProtocol(lendingpool)
 	return protocol, nil
 }
 

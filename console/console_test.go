@@ -25,8 +25,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/tomochain/tomochain/tomox"
-	"github.com/tomochain/tomochain/tomoxlending"
+	// "github.com/tomochain/tomochain/tomox"
+	// "github.com/tomochain/tomochain/tomoxlending"
 
 	"github.com/tomochain/tomochain/common"
 	"github.com/tomochain/tomochain/consensus/ethash"
@@ -108,7 +108,7 @@ func newTester(t *testing.T, confOverride func(*eth.Config)) *tester {
 		confOverride(ethConf)
 	}
 	if err = stack.Register(func(ctx *node.ServiceContext) (node.Service, error) {
-		return eth.New(ctx, ethConf, &tomox.TomoX{}, &tomoxlending.Lending{})
+		return eth.New(ctx, ethConf /* &tomox.TomoX{}, &tomoxlending.Lending{} */)
 	}); err != nil {
 		t.Fatalf("failed to register Ethereum protocol: %v", err)
 	}

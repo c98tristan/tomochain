@@ -216,7 +216,8 @@ type ChainConfig struct {
 	TIPTomoXLendingBlock         *big.Int `json:"tipTomoXLendingBlock,omitempty"`         // TIPTomoXLending switch block (nil = no fork, 0 = already activated)
 	TIPTomoXCancellationFeeBlock *big.Int `json:"tipTomoXCancellationFeeBlock,omitempty"` // TIPTomoXCancellationFee switch block (nil = no fork, 0 = already activated)
 
-	SaigonBlock *big.Int `json:"saigonBlock,omitempty"` // Saigon switch block (nil = no fork, 0 = already activated)
+	SaigonBlock    *big.Int `json:"saigonBlock,omitempty"`    // Saigon switch block (nil = no fork, 0 = already activated)
+	HoChiMinhBlock *big.Int `json:"hoChiMinhBlock,omitempty"` // HoChiMinh switch block (nil = no fork, 0 = already activated)
 
 	// Various consensus engines
 	Ethash *EthashConfig `json:"ethash,omitempty"`
@@ -362,6 +363,10 @@ func (c *ChainConfig) IsTIPTomoXCancellationFee(num *big.Int) bool {
 
 func (c *ChainConfig) IsSaigon(num *big.Int) bool {
 	return isForked(c.SaigonBlock, num)
+}
+
+func (c *ChainConfig) IsHoChiMinh(num *big.Int) bool {
+	return isForked(c.HoChiMinhBlock, num)
 }
 
 // GasTable returns the gas table corresponding to the current phase (homestead or homestead reprice).

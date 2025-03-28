@@ -33,9 +33,10 @@ import (
 	"github.com/tomochain/tomochain/ethdb"
 	"github.com/tomochain/tomochain/log"
 	"github.com/tomochain/tomochain/params"
-	"github.com/tomochain/tomochain/tomox"
-	"github.com/tomochain/tomochain/tomox/tradingstate"
-	"github.com/tomochain/tomochain/tomoxlending"
+
+	// "github.com/tomochain/tomochain/tomox"
+	// "github.com/tomochain/tomochain/tomox/tradingstate"
+	// "github.com/tomochain/tomochain/tomoxlending"
 	"github.com/tomochain/tomochain/trie"
 	"gopkg.in/urfave/cli.v1"
 )
@@ -81,19 +82,19 @@ func setupChain(ctx *cli.Context) (ethdb.Database, tomoConfig, *params.ChainConf
 	chainConfig, _, _ := core.SetupGenesisBlock(chainDB, nodeConfig.Eth.Genesis)
 
 	var (
-		vmConfig       = vm.Config{}
-		cacheConfig    = &core.CacheConfig{}
-		tomoXService   *tomox.TomoX
-		lendingService *tomoxlending.Lending
+		vmConfig    = vm.Config{}
+		cacheConfig = &core.CacheConfig{}
+		// tomoXService   *tomox.TomoX
+		// lendingService *tomoxlending.Lending
 	)
 
 	posvConsensus := posv.New(chainConfig.Posv, chainDB)
-	posvConsensus.GetTomoXService = func() posv.TradingService {
-		return tomoXService
-	}
-	posvConsensus.GetLendingService = func() posv.LendingService {
-		return lendingService
-	}
+	// posvConsensus.GetTomoXService = func() posv.TradingService {
+	// 	return tomoXService
+	// }
+	// posvConsensus.GetLendingService = func() posv.LendingService {
+	// 	return lendingService
+	// }
 
 	blockchain, err := core.NewBlockChain(chainDB, cacheConfig, chainConfig, posvConsensus, vmConfig)
 	if err != nil {
@@ -123,13 +124,13 @@ func reexecState(
 	nodeConfig tomoConfig,
 	block *types.Block,
 	blockchain *core.BlockChain,
-) (*state.StateDB, *tradingstate.TradingStateDB, state.Database, error) {
+) (*state.StateDB /*  *tradingstate.TradingStateDB, */, state.Database, error) {
 	database := state.NewDatabase(db)
 
 	var (
-		stateDB      *state.StateDB
-		tomoxStateDB *tradingstate.TradingStateDB
-		err          error
+		stateDB *state.StateDB
+		// tomoxStateDB *tradingstate.TradingStateDB
+		err error
 	)
 
 	// Re-execute to find the latest valid state
@@ -140,10 +141,10 @@ func reexecState(
 		}
 
 		if stateDB, err = state.New(block.Root(), database); err == nil {
-			if block.NumberU64() >= common.TIPTomoXBlock.Uint64() {
-				tomoxDB := tradingstate.NewDatabase(tomox.NewLDBEngine(&nodeConfig.TomoX))
-				tomoxStateDB, err = tradingstate.New(block.Root(), tomoxDB)
-			}
+			// if block.NumberU64() >= common.TIPTomoXBlock.Uint64() {
+			// 	tomoxDB := tradingstate.NewDatabase(tomox.NewLDBEngine(&nodeConfig.TomoX))
+			// 	tomoxStateDB, err = tradingstate.New(block.Root(), tomoxDB)
+			// }
 			if err == nil {
 				break
 			}
@@ -152,11 +153,11 @@ func reexecState(
 
 	if err != nil {
 		if _, ok := err.(*trie.MissingNodeError); ok {
-			return nil, nil, nil, errors.New("required historical state unavailable")
+			return nil /* nil, */, nil, errors.New("required historical state unavailable")
 		}
-		return nil, nil, nil, err
+		return nil /* nil, */, nil, err
 	}
-	return stateDB, tomoxStateDB, database, nil
+	return stateDB /* tomoxStateDB, */, database, nil
 }
 
 // regenerateState regenerates the state from the given block to the target block.
@@ -179,8 +180,8 @@ func regenerateState(
 	targetBlock *types.Block,
 	stateDB *state.StateDB,
 	blockchain *core.BlockChain,
-	tomoxStateDB *tradingstate.TradingStateDB,
-) (*state.StateDB, *tradingstate.TradingStateDB, error) {
+	// tomoxStateDB *tradingstate.TradingStateDB,
+) (*state.StateDB /* *tradingstate.TradingStateDB, */, error) {
 	var (
 		start  = time.Now()
 		logged time.Time
@@ -193,24 +194,24 @@ func regenerateState(
 		}
 		// Retrieve the next block to regenerate and process it
 		if block = blockchain.GetBlockByNumber(block.NumberU64() + 1); block == nil {
-			return nil, nil, fmt.Errorf("block #%d not found", block.NumberU64()+1)
+			return nil /* nil, */, fmt.Errorf("block #%d not found", block.NumberU64()+1)
 		}
 		feeCapacity := state.GetTRC21FeeCapacityFromState(stateDB)
-		_, _, _, err := blockchain.Processor().Process(block, stateDB, tomoxStateDB, vm.Config{}, feeCapacity)
+		_, _, _, err := blockchain.Processor().Process(block, stateDB /* tomoxStateDB, */, vm.Config{}, feeCapacity)
 		if err != nil {
-			return nil, nil, err
+			return nil /* nil, */, err
 		}
 		root := stateDB.IntermediateRoot(true)
 		if root != block.Root() {
-			return nil, nil, fmt.Errorf("invalid merkle root (number :%d  got : %x expect: %x)", block.NumberU64(), root.Hex(), block.Root())
+			return nil /*  nil, */, fmt.Errorf("invalid merkle root (number :%d  got : %x expect: %x)", block.NumberU64(), root.Hex(), block.Root())
 		}
 		// Finalize the state so any modifications are written to the trie
 		root, err = stateDB.Commit(true)
 		if err != nil {
-			return nil, nil, err
+			return nil /* nil, */, err
 		}
 		if err := stateDB.Reset(root); err != nil {
-			return nil, nil, err
+			return nil /* nil, */, err
 		}
 		database.TrieDB().Reference(root, common.Hash{})
 		if proot != (common.Hash{}) {
@@ -220,7 +221,7 @@ func regenerateState(
 	}
 	size, _ := database.TrieDB().Size()
 	log.Info("Historical state regenerated", "block", block.NumberU64(), "elapsed", time.Since(start), "size", size)
-	return stateDB, tomoxStateDB, nil
+	return stateDB /* tomoxStateDB, */, nil
 }
 
 // finaliseBlock processes the transactions in the given block (usually gap block) and finalizes the state.
@@ -240,7 +241,7 @@ func finaliseBlock(
 	stateDB *state.StateDB,
 	blockchain *core.BlockChain,
 	chainConfig *params.ChainConfig,
-	tomoxStateDB *tradingstate.TradingStateDB,
+	// tomoxStateDB *tradingstate.TradingStateDB,
 ) (*state.StateDB, error) {
 	var (
 		signer = types.MakeSigner(chainConfig, targetBlock.Number())
@@ -257,7 +258,7 @@ func finaliseBlock(
 		}
 		msg, _ := tx.AsMessage(signer, balance, targetBlock.Number(), false)
 		vmctx := core.NewEVMContext(msg, targetBlock.Header(), blockchain, nil)
-		vmenv := vm.NewEVM(vmctx, stateDB, tomoxStateDB, chainConfig, vm.Config{})
+		vmenv := vm.NewEVM(vmctx, stateDB /* tomoxStateDB, */, chainConfig, vm.Config{})
 		owner := common.Address{}
 		if _, _, _, err := core.ApplyMessage(vmenv, msg, new(core.GasPool).AddGas(msg.Gas()), owner); err != nil {
 			return nil, err
@@ -293,16 +294,16 @@ func initializeState(
 	stateDB, err := state.New(block.Root(), state.NewDatabase(db))
 	if err != nil {
 		// If creating a new state database fails, re-execute blocks to find the latest valid state.
-		stateDB, tomoxStateDB, database, err := reexecState(reexec, db, nodeConfig, block, blockchain)
+		stateDB /* tomoxStateDB, */, database, err := reexecState(reexec, db, nodeConfig, block, blockchain)
 		if err != nil {
 			return nil, err
 		}
 		// Regenerate the state up to the gap block.
-		stateDB, tomoxStateDB, err = regenerateState(database, block, targetBlock, stateDB, blockchain, tomoxStateDB)
+		stateDB /* tomoxStateDB, */, err = regenerateState(database, block, targetBlock, stateDB, blockchain /* tomoxStateDB */)
 		if err != nil {
 			return nil, err
 		}
-		return finaliseBlock(block, stateDB, blockchain, blockchain.Config(), tomoxStateDB)
+		return finaliseBlock(block, stateDB, blockchain, blockchain.Config() /*  tomoxStateDB */)
 	}
 	// Return the newly created state database.
 	return stateDB, nil

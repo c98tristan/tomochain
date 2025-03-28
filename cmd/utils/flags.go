@@ -52,7 +52,8 @@ import (
 	"github.com/tomochain/tomochain/p2p/nat"
 	"github.com/tomochain/tomochain/p2p/netutil"
 	"github.com/tomochain/tomochain/params"
-	"github.com/tomochain/tomochain/tomox"
+
+	// "github.com/tomochain/tomochain/tomox"
 	whisper "github.com/tomochain/tomochain/whisper/whisperv6"
 	"gopkg.in/urfave/cli.v1"
 )
@@ -205,11 +206,11 @@ var (
 		Name:  "lightkdf",
 		Usage: "Reduce key-derivation RAM & CPU usage at some expense of KDF strength",
 	}
-	// TomoX settings
-	TomoXEnabledFlag = cli.BoolFlag{
-		Name:  "tomox",
-		Usage: "Enable the tomoX protocol",
-	}
+	// // TomoX settings
+	// TomoXEnabledFlag = cli.BoolFlag{
+	// 	Name:  "tomox",
+	// 	Usage: "Enable the tomoX protocol",
+	// }
 	// Ethash settings
 	EthashCacheDirFlag = DirectoryFlag{
 		Name:  "ethash.cachedir",
@@ -1068,41 +1069,41 @@ func SetShhConfig(ctx *cli.Context, stack *node.Node, cfg *whisper.Config) {
 	}
 }
 
-func SetTomoXConfig(ctx *cli.Context, cfg *tomox.Config, tomoDataDir string) {
-	if ctx.GlobalIsSet(TomoXDataDirFlag.Name) {
-		cfg.DataDir = ctx.GlobalString(TomoXDataDirFlag.Name)
-	} else {
-		// default tomox datadir: DATADIR/tomox
-		defaultTomoXDataDir := filepath.Join(tomoDataDir, "tomox")
+// func SetTomoXConfig(ctx *cli.Context, cfg *tomox.Config, tomoDataDir string) {
+// 	if ctx.GlobalIsSet(TomoXDataDirFlag.Name) {
+// 		cfg.DataDir = ctx.GlobalString(TomoXDataDirFlag.Name)
+// 	} else {
+// 		// default tomox datadir: DATADIR/tomox
+// 		defaultTomoXDataDir := filepath.Join(tomoDataDir, "tomox")
 
-		filesInTomoXDefaultDir, _ := WalkMatch(defaultTomoXDataDir, "*.ldb")
-		filesInNodeDefaultDir, _ := WalkMatch(node.DefaultDataDir(), "*.ldb")
-		if len(filesInTomoXDefaultDir) == 0 && len(filesInNodeDefaultDir) > 0 {
-			cfg.DataDir = node.DefaultDataDir()
-		} else {
-			cfg.DataDir = defaultTomoXDataDir
-		}
-	}
-	log.Info("TomoX datadir", "path", cfg.DataDir)
-	if ctx.GlobalIsSet(TomoXDBEngineFlag.Name) {
-		cfg.DBEngine = ctx.GlobalString(TomoXDBEngineFlag.Name)
-	} else {
-		cfg.DBEngine = TomoXDBEngineFlag.Value
-	}
-	if ctx.GlobalIsSet(TomoXDBNameFlag.Name) {
-		cfg.DBName = ctx.GlobalString(TomoXDBNameFlag.Name)
-	} else {
-		cfg.DBName = TomoXDBNameFlag.Value
-	}
-	if ctx.GlobalIsSet(TomoXDBConnectionUrlFlag.Name) {
-		cfg.ConnectionUrl = ctx.GlobalString(TomoXDBConnectionUrlFlag.Name)
-	} else {
-		cfg.ConnectionUrl = TomoXDBConnectionUrlFlag.Value
-	}
-	if ctx.GlobalIsSet(TomoXDBReplicaSetNameFlag.Name) {
-		cfg.ReplicaSetName = ctx.GlobalString(TomoXDBReplicaSetNameFlag.Name)
-	}
-}
+// 		filesInTomoXDefaultDir, _ := WalkMatch(defaultTomoXDataDir, "*.ldb")
+// 		filesInNodeDefaultDir, _ := WalkMatch(node.DefaultDataDir(), "*.ldb")
+// 		if len(filesInTomoXDefaultDir) == 0 && len(filesInNodeDefaultDir) > 0 {
+// 			cfg.DataDir = node.DefaultDataDir()
+// 		} else {
+// 			cfg.DataDir = defaultTomoXDataDir
+// 		}
+// 	}
+// 	log.Info("TomoX datadir", "path", cfg.DataDir)
+// 	if ctx.GlobalIsSet(TomoXDBEngineFlag.Name) {
+// 		cfg.DBEngine = ctx.GlobalString(TomoXDBEngineFlag.Name)
+// 	} else {
+// 		cfg.DBEngine = TomoXDBEngineFlag.Value
+// 	}
+// 	if ctx.GlobalIsSet(TomoXDBNameFlag.Name) {
+// 		cfg.DBName = ctx.GlobalString(TomoXDBNameFlag.Name)
+// 	} else {
+// 		cfg.DBName = TomoXDBNameFlag.Value
+// 	}
+// 	if ctx.GlobalIsSet(TomoXDBConnectionUrlFlag.Name) {
+// 		cfg.ConnectionUrl = ctx.GlobalString(TomoXDBConnectionUrlFlag.Name)
+// 	} else {
+// 		cfg.ConnectionUrl = TomoXDBConnectionUrlFlag.Value
+// 	}
+// 	if ctx.GlobalIsSet(TomoXDBReplicaSetNameFlag.Name) {
+// 		cfg.ReplicaSetName = ctx.GlobalString(TomoXDBReplicaSetNameFlag.Name)
+// 	}
+// }
 
 // SetEthConfig applies eth-related command line flags to the config.
 func SetEthConfig(ctx *cli.Context, stack *node.Node, cfg *eth.Config) {

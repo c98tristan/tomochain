@@ -17,12 +17,13 @@
 package vm
 
 import (
-	"github.com/tomochain/tomochain/tomox/tradingstate"
 	"errors"
-	"github.com/tomochain/tomochain/params"
 	"math/big"
 	"sync/atomic"
 	"time"
+
+	"github.com/tomochain/tomochain/params"
+	// "github.com/tomochain/tomochain/tomox/tradingstate"
 
 	"github.com/tomochain/tomochain/common"
 	"github.com/tomochain/tomochain/crypto"
@@ -53,12 +54,12 @@ func run(evm *EVM, contract *Contract, input []byte, readOnly bool) ([]byte, err
 			precompiles = PrecompiledContractsIstanbul
 		}
 		if p := precompiles[*contract.CodeAddr]; p != nil {
-			switch p.(type) {
-			case *tomoxEpochPrice:
-				p.(*tomoxEpochPrice).SetTradingState(evm.tradingStateDB)
-			case *tomoxLastPrice:
-				p.(*tomoxLastPrice).SetTradingState(evm.tradingStateDB)
-			}
+			// switch p.(type) {
+			// case *tomoxEpochPrice:
+			// 	p.(*tomoxEpochPrice).SetTradingState(evm.tradingStateDB)
+			// case *tomoxLastPrice:
+			// 	p.(*tomoxLastPrice).SetTradingState(evm.tradingStateDB)
+			// }
 			return RunPrecompiledContract(p, input, contract)
 		}
 	}
@@ -121,7 +122,7 @@ type EVM struct {
 	// StateDB gives access to the underlying state
 	StateDB StateDB
 
-	tradingStateDB *tradingstate.TradingStateDB
+	// tradingStateDB *tradingstate.TradingStateDB
 
 	// Depth is the current call stack
 	depth int
@@ -148,11 +149,11 @@ type EVM struct {
 
 // NewEVM returns a new EVM. The returned EVM is not thread safe and should
 // only ever be used *once*.
-func NewEVM(ctx Context, statedb StateDB, tradingStateDB *tradingstate.TradingStateDB, chainConfig *params.ChainConfig, vmConfig Config) *EVM {
+func NewEVM(ctx Context, statedb StateDB /* tradingStateDB *tradingstate.TradingStateDB, */, chainConfig *params.ChainConfig, vmConfig Config) *EVM {
 	evm := &EVM{
-		Context:      ctx,
-		StateDB:      statedb,
-		tradingStateDB: tradingStateDB,
+		Context: ctx,
+		StateDB: statedb,
+		/* tradingStateDB: tradingStateDB, */
 		vmConfig:     vmConfig,
 		chainConfig:  chainConfig,
 		chainRules:   chainConfig.Rules(ctx.BlockNumber),
@@ -354,7 +355,6 @@ func (evm *EVM) StaticCall(caller ContractRef, addr common.Address, input []byte
 		// future scenarios
 		evm.StateDB.AddBalance(addr, bigZero)
 	}
-
 
 	// When an error was returned by the EVM or when setting the creation code
 	// above we revert to the snapshot and consume any gas remaining. Additionally
