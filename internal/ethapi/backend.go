@@ -19,11 +19,11 @@ package ethapi
 
 import (
 	"context"
-	"github.com/tomochain/tomochain/tomox/tradingstate"
-	"github.com/tomochain/tomochain/tomoxlending"
+	// "github.com/tomochain/tomochain/tomox/tradingstate"
+	// "github.com/tomochain/tomochain/tomoxlending"
 	"math/big"
 
-	"github.com/tomochain/tomochain/tomox"
+	// "github.com/tomochain/tomochain/tomox"
 
 	"github.com/tomochain/tomochain/accounts"
 	"github.com/tomochain/tomochain/common"
@@ -50,8 +50,8 @@ type Backend interface {
 	ChainDb() ethdb.Database
 	EventMux() *event.TypeMux
 	AccountManager() *accounts.Manager
-	TomoxService() *tomox.TomoX
-	LendingService() *tomoxlending.Lending
+	// TomoxService() *tomox.TomoX
+	// LendingService() *tomoxlending.Lending
 
 	// BlockChain API
 	SetHead(number uint64)
@@ -62,7 +62,7 @@ type Backend interface {
 	GetBlock(ctx context.Context, blockHash common.Hash) (*types.Block, error)
 	GetReceipts(ctx context.Context, blockHash common.Hash) (types.Receipts, error)
 	GetTd(blockHash common.Hash) *big.Int
-	GetEVM(ctx context.Context, msg core.Message, state *state.StateDB, tomoxState *tradingstate.TradingStateDB, header *types.Header, vmCfg vm.Config) (*vm.EVM, func() error, error)
+	GetEVM(ctx context.Context, msg core.Message, state *state.StateDB /* tomoxState *tradingstate.TradingStateDB, */, header *types.Header, vmCfg vm.Config) (*vm.EVM, func() error, error)
 	SubscribeChainEvent(ch chan<- core.ChainEvent) event.Subscription
 	SubscribeChainHeadEvent(ch chan<- core.ChainHeadEvent) event.Subscription
 	SubscribeChainSideEvent(ch chan<- core.ChainSideEvent) event.Subscription
@@ -77,10 +77,10 @@ type Backend interface {
 	SubscribeTxPreEvent(chan<- core.TxPreEvent) event.Subscription
 
 	// Order Pool Transaction
-	SendOrderTx(ctx context.Context, signedTx *types.OrderTransaction) error
-	OrderTxPoolContent() (map[common.Address]types.OrderTransactions, map[common.Address]types.OrderTransactions)
-	OrderStats() (pending int, queued int)
-	SendLendingTx(ctx context.Context, signedTx *types.LendingTransaction) error
+	// SendOrderTx(ctx context.Context, signedTx *types.OrderTransaction) error
+	// OrderTxPoolContent() (map[common.Address]types.OrderTransactions, map[common.Address]types.OrderTransactions)
+	// OrderStats() (pending int, queued int)
+	// SendLendingTx(ctx context.Context, signedTx *types.LendingTransaction) error
 
 	ChainConfig() *params.ChainConfig
 	CurrentBlock() *types.Block
@@ -94,7 +94,7 @@ type Backend interface {
 	GetMasternodesCap(checkpoint uint64) map[common.Address]*big.Int
 	GetBlocksHashCache(blockNr uint64) []common.Hash
 	AreTwoBlockSamePath(newBlock common.Hash, oldBlock common.Hash) bool
-	GetOrderNonce(address common.Hash) (uint64, error)
+	// GetOrderNonce(address common.Hash) (uint64, error)
 }
 
 func GetAPIs(apiBackend Backend) []rpc.API {
@@ -115,12 +115,14 @@ func GetAPIs(apiBackend Backend) []rpc.API {
 			Version:   "1.0",
 			Service:   NewPublicTransactionPoolAPI(apiBackend, nonceLock),
 			Public:    true,
-		}, {
-			Namespace: "tomox",
-			Version:   "1.0",
-			Service:   NewPublicTomoXTransactionPoolAPI(apiBackend, nonceLock),
-			Public:    true,
-		}, {
+		},
+		// {
+		// 	Namespace: "tomox",
+		// 	Version:   "1.0",
+		// 	Service:   NewPublicTomoXTransactionPoolAPI(apiBackend, nonceLock),
+		// 	Public:    true,
+		// },
+		{
 			Namespace: "txpool",
 			Version:   "1.0",
 			Service:   NewPublicTxPoolAPI(apiBackend),

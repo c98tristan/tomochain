@@ -1,4 +1,4 @@
-// package tomoxDAO
+package tomoxDAO
 
 // import (
 // 	"bytes"

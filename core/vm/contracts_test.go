@@ -356,77 +356,79 @@ var bn256PairingTests = []precompiledTest{
 	},
 }
 
-var tomoxLastPriceTests = []precompiledTest{
-	{
-		input:    common.Bytes2Hex(append(common.Hex2BytesFixed(BTCAddress, 32), common.Hex2BytesFixed(USDTAddress, 32)...)),
-		expected: common.Bytes2Hex(common.LeftPadBytes(BTCUSDTLastPrice.Bytes(), TomoXPriceNumberOfBytesReturn)),
-		name:     "BTCUSDT",
-	},
-	{
-		input:    common.Bytes2Hex(append(common.Hex2BytesFixed(BTCAddress, 30), common.Hex2BytesFixed(USDTAddress, 30)...)),
-		expected: common.Bytes2Hex(common.LeftPadBytes(common.Big0.Bytes(), TomoXPriceNumberOfBytesReturn)),
-		name:     "BTCUSDT_invalid_input_length",
-	},
-	{
-		input:    common.Bytes2Hex(append(common.Hex2BytesFixed(USDTAddress, 32), common.Hex2BytesFixed(BTCAddress, 32)...)),
-		expected: common.Bytes2Hex(common.LeftPadBytes(common.Big0.Bytes(), TomoXPriceNumberOfBytesReturn)),
-		name:     "USDTBTC",
-	},
-}
+// const TomoXPriceNumberOfBytesReturn = 32 // Define the constant with an appropriate value
 
-var tomoxEpochPriceTests = []precompiledTest{
-	{
-		input:    common.Bytes2Hex(append(common.Hex2BytesFixed(BTCAddress, 32), common.Hex2BytesFixed(USDTAddress, 32)...)),
-		expected: common.Bytes2Hex(common.LeftPadBytes(BTCUSDTEpochPrice.Bytes(), TomoXPriceNumberOfBytesReturn)),
-		name:     "BTCUSDT",
-	},
-	{
-		input:    common.Bytes2Hex(append(common.Hex2BytesFixed(BTCAddress, 30), common.Hex2BytesFixed(USDTAddress, 30)...)),
-		expected: common.Bytes2Hex(common.LeftPadBytes(common.Big0.Bytes(), TomoXPriceNumberOfBytesReturn)),
-		name:     "BTCUSDT_invalid_input_length",
-	},
-	{
-		input:    common.Bytes2Hex(append(common.Hex2BytesFixed(USDTAddress, 32), common.Hex2BytesFixed(BTCAddress, 32)...)),
-		expected: common.Bytes2Hex(common.LeftPadBytes(common.Big0.Bytes(), TomoXPriceNumberOfBytesReturn)),
-		name:     "USDTBTC",
-	},
-}
+// var tomoxLastPriceTests = []precompiledTest{
+// 	{
+// 		input:    common.Bytes2Hex(append(common.Hex2BytesFixed(BTCAddress, 32), common.Hex2BytesFixed(USDTAddress, 32)...)),
+// 		expected: common.Bytes2Hex(common.LeftPadBytes(BTCUSDTLastPrice.Bytes(), TomoXPriceNumberOfBytesReturn)),
+// 		name:     "BTCUSDT",
+// 	},
+// 	{
+// 		input:    common.Bytes2Hex(append(common.Hex2BytesFixed(BTCAddress, 30), common.Hex2BytesFixed(USDTAddress, 30)...)),
+// 		expected: common.Bytes2Hex(common.LeftPadBytes(common.Big0.Bytes(), TomoXPriceNumberOfBytesReturn)),
+// 		name:     "BTCUSDT_invalid_input_length",
+// 	},
+// 	{
+// 		input:    common.Bytes2Hex(append(common.Hex2BytesFixed(USDTAddress, 32), common.Hex2BytesFixed(BTCAddress, 32)...)),
+// 		expected: common.Bytes2Hex(common.LeftPadBytes(common.Big0.Bytes(), TomoXPriceNumberOfBytesReturn)),
+// 		name:     "USDTBTC",
+// 	},
+// }
 
-var tomoxLastPriceWithEmptyTradingStateTests = []precompiledTest{
-	{
-		input:    common.Bytes2Hex(append(common.Hex2BytesFixed(BTCAddress, 32), common.Hex2BytesFixed(USDTAddress, 32)...)),
-		expected: common.Bytes2Hex(common.LeftPadBytes(common.Big0.Bytes(), TomoXPriceNumberOfBytesReturn)),
-		name:     "BTCUSDT",
-	},
-	{
-		input:    common.Bytes2Hex(append(common.Hex2BytesFixed(BTCAddress, 30), common.Hex2BytesFixed(USDTAddress, 30)...)),
-		expected: common.Bytes2Hex(common.LeftPadBytes(common.Big0.Bytes(), TomoXPriceNumberOfBytesReturn)),
-		name:     "BTCUSDT_invalid_input_length",
-	},
-	{
-		input:    common.Bytes2Hex(append(common.Hex2BytesFixed(USDTAddress, 32), common.Hex2BytesFixed(BTCAddress, 32)...)),
-		expected: common.Bytes2Hex(common.LeftPadBytes(common.Big0.Bytes(), TomoXPriceNumberOfBytesReturn)),
-		name:     "USDTBTC",
-	},
-}
+// var tomoxEpochPriceTests = []precompiledTest{
+// 	{
+// 		input:    common.Bytes2Hex(append(common.Hex2BytesFixed(BTCAddress, 32), common.Hex2BytesFixed(USDTAddress, 32)...)),
+// 		expected: common.Bytes2Hex(common.LeftPadBytes(BTCUSDTEpochPrice.Bytes(), TomoXPriceNumberOfBytesReturn)),
+// 		name:     "BTCUSDT",
+// 	},
+// 	{
+// 		input:    common.Bytes2Hex(append(common.Hex2BytesFixed(BTCAddress, 30), common.Hex2BytesFixed(USDTAddress, 30)...)),
+// 		expected: common.Bytes2Hex(common.LeftPadBytes(common.Big0.Bytes(), TomoXPriceNumberOfBytesReturn)),
+// 		name:     "BTCUSDT_invalid_input_length",
+// 	},
+// 	{
+// 		input:    common.Bytes2Hex(append(common.Hex2BytesFixed(USDTAddress, 32), common.Hex2BytesFixed(BTCAddress, 32)...)),
+// 		expected: common.Bytes2Hex(common.LeftPadBytes(common.Big0.Bytes(), TomoXPriceNumberOfBytesReturn)),
+// 		name:     "USDTBTC",
+// 	},
+// }
 
-var tomoxEpochPriceWithEmptyTradingStateTests = []precompiledTest{
-	{
-		input:    common.Bytes2Hex(append(common.Hex2BytesFixed(BTCAddress, 32), common.Hex2BytesFixed(USDTAddress, 32)...)),
-		expected: common.Bytes2Hex(common.LeftPadBytes(common.Big0.Bytes(), TomoXPriceNumberOfBytesReturn)),
-		name:     "BTCUSDT",
-	},
-	{
-		input:    common.Bytes2Hex(append(common.Hex2BytesFixed(BTCAddress, 30), common.Hex2BytesFixed(USDTAddress, 30)...)),
-		expected: common.Bytes2Hex(common.LeftPadBytes(common.Big0.Bytes(), TomoXPriceNumberOfBytesReturn)),
-		name:     "BTCUSDT_invalid_input_length",
-	},
-	{
-		input:    common.Bytes2Hex(append(common.Hex2BytesFixed(USDTAddress, 32), common.Hex2BytesFixed(BTCAddress, 32)...)),
-		expected: common.Bytes2Hex(common.LeftPadBytes(common.Big0.Bytes(), TomoXPriceNumberOfBytesReturn)),
-		name:     "USDTBTC",
-	},
-}
+// var tomoxLastPriceWithEmptyTradingStateTests = []precompiledTest{
+// 	{
+// 		input:    common.Bytes2Hex(append(common.Hex2BytesFixed(BTCAddress, 32), common.Hex2BytesFixed(USDTAddress, 32)...)),
+// 		expected: common.Bytes2Hex(common.LeftPadBytes(common.Big0.Bytes(), TomoXPriceNumberOfBytesReturn)),
+// 		name:     "BTCUSDT",
+// 	},
+// 	{
+// 		input:    common.Bytes2Hex(append(common.Hex2BytesFixed(BTCAddress, 30), common.Hex2BytesFixed(USDTAddress, 30)...)),
+// 		expected: common.Bytes2Hex(common.LeftPadBytes(common.Big0.Bytes(), TomoXPriceNumberOfBytesReturn)),
+// 		name:     "BTCUSDT_invalid_input_length",
+// 	},
+// 	{
+// 		input:    common.Bytes2Hex(append(common.Hex2BytesFixed(USDTAddress, 32), common.Hex2BytesFixed(BTCAddress, 32)...)),
+// 		expected: common.Bytes2Hex(common.LeftPadBytes(common.Big0.Bytes(), TomoXPriceNumberOfBytesReturn)),
+// 		name:     "USDTBTC",
+// 	},
+// }
+
+// var tomoxEpochPriceWithEmptyTradingStateTests = []precompiledTest{
+// 	{
+// 		input:    common.Bytes2Hex(append(common.Hex2BytesFixed(BTCAddress, 32), common.Hex2BytesFixed(USDTAddress, 32)...)),
+// 		expected: common.Bytes2Hex(common.LeftPadBytes(common.Big0.Bytes(), TomoXPriceNumberOfBytesReturn)),
+// 		name:     "BTCUSDT",
+// 	},
+// 	{
+// 		input:    common.Bytes2Hex(append(common.Hex2BytesFixed(BTCAddress, 30), common.Hex2BytesFixed(USDTAddress, 30)...)),
+// 		expected: common.Bytes2Hex(common.LeftPadBytes(common.Big0.Bytes(), TomoXPriceNumberOfBytesReturn)),
+// 		name:     "BTCUSDT_invalid_input_length",
+// 	},
+// 	{
+// 		input:    common.Bytes2Hex(append(common.Hex2BytesFixed(USDTAddress, 32), common.Hex2BytesFixed(BTCAddress, 32)...)),
+// 		expected: common.Bytes2Hex(common.LeftPadBytes(common.Big0.Bytes(), TomoXPriceNumberOfBytesReturn)),
+// 		name:     "USDTBTC",
+// 	},
+// }
 
 // EIP-152 test vectors
 var blake2FMalformedInputTests = []precompiledFailureTest{
@@ -524,7 +526,7 @@ func testPrecompiled(addr string, test precompiledTest, t *testing.T) {
 // }
 
 func testPrecompiledWithEmptyTradingState(addr string, test precompiledTest, t *testing.T) {
-	evm := NewEVM(Context{BlockNumber: common.Big1}, nil, nil, &params.ChainConfig{ByzantiumBlock: common.Big0}, Config{})
+	evm := NewEVM(Context{BlockNumber: common.Big1} /* nil, */, nil, &params.ChainConfig{ByzantiumBlock: common.Big0}, Config{})
 
 	contractAddr := common.HexToAddress(addr)
 	p := PrecompiledContractsByzantium[contractAddr]
@@ -710,33 +712,33 @@ func TestPrecompiledBn256Pairing(t *testing.T) {
 	}
 }
 
-// Tests GetTomoXLastPrice
-func TestPrecompiledTomoXLastPrice(t *testing.T) {
-	for _, test := range tomoxLastPriceTests {
-		testTomoxPrecompiled("29", test, t)
-	}
-}
+// // Tests GetTomoXLastPrice
+// func TestPrecompiledTomoXLastPrice(t *testing.T) {
+// 	for _, test := range tomoxLastPriceTests {
+// 		testTomoxPrecompiled("29", test, t)
+// 	}
+// }
 
-// Tests GetTomoXEpochPrice
-func TestPrecompiledTomoXEpochPrice(t *testing.T) {
-	for _, test := range tomoxEpochPriceTests {
-		testTomoxPrecompiled("2A", test, t)
-	}
-}
+// // Tests GetTomoXEpochPrice
+// func TestPrecompiledTomoXEpochPrice(t *testing.T) {
+// 	for _, test := range tomoxEpochPriceTests {
+// 		testTomoxPrecompiled("2A", test, t)
+// 	}
+// }
 
-// Tests GetTomoXLastPrice
-func TestPrecompiledTomoXLastPriceWithEmptyTradingState(t *testing.T) {
-	for _, test := range tomoxLastPriceWithEmptyTradingStateTests {
-		testPrecompiledWithEmptyTradingState("29", test, t)
-	}
-}
+// // Tests GetTomoXLastPrice
+// func TestPrecompiledTomoXLastPriceWithEmptyTradingState(t *testing.T) {
+// 	for _, test := range tomoxLastPriceWithEmptyTradingStateTests {
+// 		testPrecompiledWithEmptyTradingState("29", test, t)
+// 	}
+// }
 
-// Tests GetTomoXEpochPrice
-func TestPrecompiledTomoXEpochPriceWithEmptyTradingState(t *testing.T) {
-	for _, test := range tomoxEpochPriceWithEmptyTradingStateTests {
-		testPrecompiledWithEmptyTradingState("2A", test, t)
-	}
-}
+// // Tests GetTomoXEpochPrice
+// func TestPrecompiledTomoXEpochPriceWithEmptyTradingState(t *testing.T) {
+// 	for _, test := range tomoxEpochPriceWithEmptyTradingStateTests {
+// 		testPrecompiledWithEmptyTradingState("2A", test, t)
+// 	}
+// }
 
 // Behcnmarks the sample inputs from the elliptic curve pairing check EIP 197.
 func BenchmarkPrecompiledBn256Pairing(bench *testing.B) {

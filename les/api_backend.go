@@ -24,9 +24,9 @@ import (
 	"math/big"
 	"path/filepath"
 
-	"github.com/tomochain/tomochain/tomox"
-	"github.com/tomochain/tomochain/tomox/tradingstate"
-	"github.com/tomochain/tomochain/tomoxlending"
+	// "github.com/tomochain/tomochain/tomox"
+	// "github.com/tomochain/tomochain/tomox/tradingstate"
+	// "github.com/tomochain/tomochain/tomoxlending"
 
 	"github.com/tomochain/tomochain/accounts"
 	"github.com/tomochain/tomochain/common"
@@ -133,10 +133,10 @@ func (b *LesApiBackend) GetTd(blockHash common.Hash) *big.Int {
 	return b.eth.blockchain.GetTdByHash(blockHash)
 }
 
-func (b *LesApiBackend) GetEVM(ctx context.Context, msg core.Message, state *state.StateDB, tomoxState *tradingstate.TradingStateDB, header *types.Header, vmCfg vm.Config) (*vm.EVM, func() error, error) {
+func (b *LesApiBackend) GetEVM(ctx context.Context, msg core.Message, state *state.StateDB /* tomoxState *tradingstate.TradingStateDB, */, header *types.Header, vmCfg vm.Config) (*vm.EVM, func() error, error) {
 	state.SetBalance(msg.From(), math.MaxBig256)
 	context := core.NewEVMContext(msg, header, b.eth.blockchain, nil)
-	return vm.NewEVM(context, state, tomoxState, b.eth.chainConfig, vmCfg), state.Error, nil
+	return vm.NewEVM(context, state /* tomoxState, */, b.eth.chainConfig, vmCfg), state.Error, nil
 }
 
 func (b *LesApiBackend) SendTx(ctx context.Context, signedTx *types.Transaction) error {
@@ -301,14 +301,14 @@ func (b *LesApiBackend) AreTwoBlockSamePath(bh1 common.Hash, bh2 common.Hash) bo
 }
 
 // GetOrderNonce get order nonce
-func (b *LesApiBackend) GetOrderNonce(address common.Hash) (uint64, error) {
-	return 0, errors.New("cannot find tomox service")
-}
+// func (b *LesApiBackend) GetOrderNonce(address common.Hash) (uint64, error) {
+// 	return 0, errors.New("cannot find tomox service")
+// }
 
-func (b *LesApiBackend) TomoxService() *tomox.TomoX {
-	return nil
-}
+// func (b *LesApiBackend) TomoxService() *tomox.TomoX {
+// 	return nil
+// }
 
-func (b *LesApiBackend) LendingService() *tomoxlending.Lending {
-	return nil
-}
+// func (b *LesApiBackend) LendingService() *tomoxlending.Lending {
+// 	return nil
+// }

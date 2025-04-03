@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+
 	"github.com/stretchr/testify/require"
 	"github.com/tomochain/tomochain/accounts"
 	"github.com/tomochain/tomochain/common"
@@ -23,9 +24,10 @@ import (
 	"github.com/tomochain/tomochain/event"
 	"github.com/tomochain/tomochain/params"
 	"github.com/tomochain/tomochain/rpc"
-	"github.com/tomochain/tomochain/tomox"
-	"github.com/tomochain/tomochain/tomox/tradingstate"
-	"github.com/tomochain/tomochain/tomoxlending"
+
+	// "github.com/tomochain/tomochain/tomox"
+	// "github.com/tomochain/tomochain/tomox/tradingstate"
+	// "github.com/tomochain/tomochain/tomoxlending"
 	"math/big"
 	"os"
 	"path/filepath"
@@ -38,7 +40,7 @@ type testBackend struct {
 	db      ethdb.Database
 	chain   *core.BlockChain
 	pending *types.Block
-	TomoX   *tomox.TomoX
+	// TomoX   *tomox.TomoX
 }
 
 func (t testBackend) Downloader() *downloader.Downloader {
@@ -70,14 +72,14 @@ func (b testBackend) AccountManager() *accounts.Manager {
 	return &accounts.Manager{}
 }
 
-func (b testBackend) TomoxService() *tomox.TomoX {
-	return b.TomoX
-}
+// func (b testBackend) TomoxService() *tomox.TomoX {
+// 	return b.TomoX
+// }
 
-func (t testBackend) LendingService() *tomoxlending.Lending {
-	//TODO implement me
-	panic("implement me")
-}
+// func (t testBackend) LendingService() *tomoxlending.Lending {
+// 	//TODO implement me
+// 	panic("implement me")
+// }
 
 func (t testBackend) SetHead(number uint64) {
 	//TODO implement me
@@ -146,11 +148,11 @@ func (t testBackend) GetTd(blockHash common.Hash) *big.Int {
 	panic("implement me")
 }
 
-func (b testBackend) GetEVM(ctx context.Context, msg core.Message, state *state.StateDB, tomoxState *tradingstate.TradingStateDB, header *types.Header, vmCfg vm.Config) (*vm.EVM, func() error, error) {
+func (b testBackend) GetEVM(ctx context.Context, msg core.Message, state *state.StateDB /* tomoxState *tradingstate.TradingStateDB, */, header *types.Header, vmCfg vm.Config) (*vm.EVM, func() error, error) {
 	vmError := func() error { return nil }
 
 	context := core.NewEVMContext(msg, header, b.chain, nil)
-	return vm.NewEVM(context, state, tomoxState, b.chain.Config(), vmCfg), vmError, nil
+	return vm.NewEVM(context, state /* tomoxState, */, b.chain.Config(), vmCfg), vmError, nil
 }
 
 func (t testBackend) SubscribeChainEvent(ch chan<- core.ChainEvent) event.Subscription {
@@ -299,9 +301,9 @@ func newTestBackend(t *testing.T, n int, gspec *core.Genesis, generator func(i i
 		t.Fatalf("block %d: failed to insert into chain: %v", n, err)
 	}
 
-	tomo := tomox.New(&tomox.DefaultConfig)
+	// tomo := tomox.New(&tomox.DefaultConfig)
 
-	backend := &testBackend{db: db, chain: chain, TomoX: tomo}
+	backend := &testBackend{db: db, chain: chain /* , TomoX: tomo */}
 	return backend
 }
 

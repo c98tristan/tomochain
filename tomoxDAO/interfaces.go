@@ -1,8 +1,8 @@
-// // Copyright 2019 The Tomochain Authors
-// // This file is part of the Core Tomochain infrastructure
-// // https://tomochain.com
-// // Package tomoxDAO provides an interface to work with tomox database, including leveldb for masternode and mongodb for SDK node
-// package tomoxDAO
+// Copyright 2019 The Tomochain Authors
+// This file is part of the Core Tomochain infrastructure
+// https://tomochain.com
+// Package tomoxDAO provides an interface to work with tomox database, including leveldb for masternode and mongodb for SDK node
+package tomoxDAO
 
 // import (
 // 	"github.com/tomochain/tomochain/common"

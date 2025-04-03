@@ -1,4 +1,4 @@
-// package tradingstate
+package tradingstate
 
 // import (
 // 	"github.com/tomochain/tomochain/rlp"

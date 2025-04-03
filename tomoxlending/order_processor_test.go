@@ -1,4 +1,4 @@
-// package tomoxlending
+package tomoxlending
 
 // import (
 // 	"github.com/tomochain/tomochain/common"

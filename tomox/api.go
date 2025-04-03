@@ -1,4 +1,4 @@
-// package tomox
+package tomox
 
 // import (
 // 	"context"

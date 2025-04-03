@@ -25,10 +25,10 @@ import (
 	"math/big"
 	"path/filepath"
 
-	"github.com/tomochain/tomochain/tomox/tradingstate"
-	"github.com/tomochain/tomochain/tomoxlending"
+	// "github.com/tomochain/tomochain/tomox/tradingstate"
+	// "github.com/tomochain/tomochain/tomoxlending"
 
-	"github.com/tomochain/tomochain/tomox"
+	// "github.com/tomochain/tomochain/tomox"
 
 	"github.com/tomochain/tomochain/consensus/posv"
 
@@ -171,12 +171,12 @@ func (b *EthApiBackend) GetTd(blockHash common.Hash) *big.Int {
 	return b.eth.blockchain.GetTdByHash(blockHash)
 }
 
-func (b *EthApiBackend) GetEVM(ctx context.Context, msg core.Message, state *state.StateDB, tomoxState *tradingstate.TradingStateDB, header *types.Header, vmCfg vm.Config) (*vm.EVM, func() error, error) {
+func (b *EthApiBackend) GetEVM(ctx context.Context, msg core.Message, state *state.StateDB /* tomoxState *tradingstate.TradingStateDB, */, header *types.Header, vmCfg vm.Config) (*vm.EVM, func() error, error) {
 	state.SetBalance(msg.From(), math.MaxBig256)
 	vmError := func() error { return nil }
 
 	context := core.NewEVMContext(msg, header, b.eth.BlockChain(), nil)
-	return vm.NewEVM(context, state, tomoxState, b.eth.chainConfig, vmCfg), vmError, nil
+	return vm.NewEVM(context, state /* tomoxState, */, b.eth.chainConfig, vmCfg), vmError, nil
 }
 
 func (b *EthApiBackend) SubscribeRemovedLogsEvent(ch chan<- core.RemovedLogsEvent) event.Subscription {
@@ -203,15 +203,15 @@ func (b *EthApiBackend) SendTx(ctx context.Context, signedTx *types.Transaction)
 	return b.eth.txPool.AddLocal(signedTx)
 }
 
-// SendOrderTx send order via backend
-func (b *EthApiBackend) SendOrderTx(ctx context.Context, signedTx *types.OrderTransaction) error {
-	return b.eth.orderPool.AddLocal(signedTx)
-}
+// // SendOrderTx send order via backend
+// func (b *EthApiBackend) SendOrderTx(ctx context.Context, signedTx *types.OrderTransaction) error {
+// 	return b.eth.orderPool.AddLocal(signedTx)
+// }
 
-// SendLendingTx send order via backend
-func (b *EthApiBackend) SendLendingTx(ctx context.Context, signedTx *types.LendingTransaction) error {
-	return b.eth.lendingPool.AddLocal(signedTx)
-}
+// // SendLendingTx send order via backend
+// func (b *EthApiBackend) SendLendingTx(ctx context.Context, signedTx *types.LendingTransaction) error {
+// 	return b.eth.lendingPool.AddLocal(signedTx)
+// }
 
 func (b *EthApiBackend) GetPoolTransactions() (types.Transactions, error) {
 	pending, err := b.eth.txPool.Pending()
@@ -241,9 +241,9 @@ func (b *EthApiBackend) TxPoolContent() (map[common.Address]types.Transactions, 
 	return b.eth.TxPool().Content()
 }
 
-func (b *EthApiBackend) OrderTxPoolContent() (map[common.Address]types.OrderTransactions, map[common.Address]types.OrderTransactions) {
-	return b.eth.OrderPool().Content()
-}
+//	func (b *EthApiBackend) OrderTxPoolContent() (map[common.Address]types.OrderTransactions, map[common.Address]types.OrderTransactions) {
+//		return b.eth.OrderPool().Content()
+//	}
 func (b *EthApiBackend) OrderStats() (pending int, queued int) {
 	return b.eth.txPool.Stats()
 }
@@ -463,27 +463,27 @@ func (b *EthApiBackend) AreTwoBlockSamePath(bh1 common.Hash, bh2 common.Hash) bo
 	return b.eth.blockchain.AreTwoBlockSamePath(bh1, bh2)
 }
 
-// GetOrderNonce get order nonce
-func (b *EthApiBackend) GetOrderNonce(address common.Hash) (uint64, error) {
-	tomoxService := b.eth.GetTomoX()
-	if tomoxService != nil {
-		author, err := b.GetEngine().Author(b.CurrentBlock().Header())
-		if err != nil {
-			return 0, err
-		}
-		tomoxState, err := tomoxService.GetTradingState(b.CurrentBlock(), author)
-		if err != nil {
-			return 0, err
-		}
-		return tomoxState.GetNonce(address), nil
-	}
-	return 0, errors.New("cannot find tomox service")
-}
+// // GetOrderNonce get order nonce
+// func (b *EthApiBackend) GetOrderNonce(address common.Hash) (uint64, error) {
+// 	tomoxService := b.eth.GetTomoX()
+// 	if tomoxService != nil {
+// 		author, err := b.GetEngine().Author(b.CurrentBlock().Header())
+// 		if err != nil {
+// 			return 0, err
+// 		}
+// 		tomoxState, err := tomoxService.GetTradingState(b.CurrentBlock(), author)
+// 		if err != nil {
+// 			return 0, err
+// 		}
+// 		return tomoxState.GetNonce(address), nil
+// 	}
+// 	return 0, errors.New("cannot find tomox service")
+// }
 
-func (b *EthApiBackend) TomoxService() *tomox.TomoX {
-	return b.eth.TomoX
-}
+// func (b *EthApiBackend) TomoxService() *tomox.TomoX {
+// 	return b.eth.TomoX
+// }
 
-func (b *EthApiBackend) LendingService() *tomoxlending.Lending {
-	return b.eth.Lending
-}
+// func (b *EthApiBackend) LendingService() *tomoxlending.Lending {
+// 	return b.eth.Lending
+// }

@@ -1,4 +1,4 @@
-// package tomox
+package tomox
 
 // import (
 // 	"github.com/tomochain/tomochain/contracts/tomox/contract"

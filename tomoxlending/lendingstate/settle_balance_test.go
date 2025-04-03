@@ -1,4 +1,4 @@
-// package lendingstate
+package lendingstate
 
 // import (
 // 	"github.com/tomochain/tomochain/common"

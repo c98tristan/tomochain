@@ -1,4 +1,4 @@
-// package vm
+package vm
 
 // import (
 // 	"github.com/tomochain/tomochain/common"

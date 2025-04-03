@@ -1,4 +1,4 @@
-// package lendingstate
+package lendingstate
 
 // import (
 // 	"encoding/json"
