@@ -15,7 +15,6 @@ require (
 	github.com/edsrzf/mmap-go v1.0.0
 	github.com/fatih/color v1.6.0
 	github.com/gizak/termui v2.2.0+incompatible
-	github.com/globalsign/mgo v0.0.0-20181015135952-eeefdecb41b8
 	github.com/go-stack/stack v1.8.0
 	github.com/golang/protobuf v1.3.2
 	github.com/golang/snappy v0.0.1
@@ -30,7 +29,6 @@ require (
 	github.com/olekukonko/tablewriter v0.0.2-0.20190409134802-7e037d187b0c
 	github.com/pborman/uuid v1.2.0
 	github.com/peterh/liner v1.1.1-0.20190123174540-a2c9a5303de7
-	github.com/pkg/errors v0.8.1
 	github.com/prometheus/prometheus v1.7.2-0.20170814170113-3101606756c5
 	github.com/rjeczalik/notify v0.9.2
 	github.com/rs/cors v1.6.0
@@ -40,13 +38,21 @@ require (
 	golang.org/x/crypto v0.0.0-20191105034135-c7e5f84aec59
 	golang.org/x/net v0.0.0-20190912160710-24e19bdeb0f2
 	golang.org/x/sync v0.0.0-20190423024810-112230192c58
-	golang.org/x/sys v0.0.0-20190912141932-bc967efca4b8
+	golang.org/x/sys v0.19.0
 	golang.org/x/tools v0.0.0-20191104232314-dc038396d1f0
 	gopkg.in/check.v1 v1.0.0-20180628173108-788fd7840127
 	gopkg.in/karalabe/cookiejar.v2 v2.0.0-20150724131613-8dcd6a7f4951
 	gopkg.in/natefinch/npipe.v2 v2.0.0-20160621034901-c1b8fa8bdcce
 	gopkg.in/olebedev/go-duktape.v3 v3.0.0-20190213234257-ec84240a7772
 	gopkg.in/urfave/cli.v1 v1.20.0
+)
+
+require (
+	github.com/go-ole/go-ole v1.2.6 // indirect
+	github.com/pkg/errors v0.8.1 // indirect
+	github.com/tklauser/go-sysconf v0.3.14 // indirect
+	github.com/tklauser/numcpus v0.8.0 // indirect
+	github.com/yusufpapurcu/wmi v1.2.4 // indirect
 )
 
 require (
@@ -65,6 +71,7 @@ require (
 	github.com/naoina/go-stringutil v0.1.0 // indirect
 	github.com/nsf/termbox-go v0.0.0-20170211012700-3540b76b9c77 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
+	github.com/shirou/gopsutil v3.21.11+incompatible
 	github.com/steakknife/hamming v0.0.0-20180906055917-c99c65617cd3 // indirect
 	golang.org/x/text v0.3.2 // indirect
 	gopkg.in/yaml.v2 v2.2.2 // indirect
