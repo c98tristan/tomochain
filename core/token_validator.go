@@ -120,25 +120,25 @@ func CallContractWithState(call ethereum.CallMsg, chain consensus.ChainContext, 
 }
 
 // make sure that balance of token is at slot 0
-func ValidateTomoXApplyTransaction(chain consensus.ChainContext, blockNumber *big.Int, copyState *state.StateDB, tokenAddr common.Address) error {
-	if blockNumber == nil || blockNumber.Sign() <= 0 {
-		blockNumber = chain.CurrentHeader().Number
-	}
-	if !chain.Config().IsTIPTomoX(blockNumber) {
-		return nil
-	}
-	contractABI, err := GetTokenAbi(contract.TRC21ABI)
-	if err != nil {
-		return fmt.Errorf("ValidateTomoXApplyTransaction: cannot parse ABI. Err: %v", err)
-	}
-	if err := ValidateBalanceSlot(chain, copyState, tokenAddr, contractABI); err != nil {
-		return err
-	}
-	if err := ValidateTokenDecimal(chain, copyState, tokenAddr, contractABI); err != nil {
-		return err
-	}
-	return nil
-}
+// func ValidateTomoXApplyTransaction(chain consensus.ChainContext, blockNumber *big.Int, copyState *state.StateDB, tokenAddr common.Address) error {
+// 	if blockNumber == nil || blockNumber.Sign() <= 0 {
+// 		blockNumber = chain.CurrentHeader().Number
+// 	}
+// 	if !chain.Config().IsTIPTomoX(blockNumber) {
+// 		return nil
+// 	}
+// 	contractABI, err := GetTokenAbi(contract.TRC21ABI)
+// 	if err != nil {
+// 		return fmt.Errorf("ValidateTomoXApplyTransaction: cannot parse ABI. Err: %v", err)
+// 	}
+// 	if err := ValidateBalanceSlot(chain, copyState, tokenAddr, contractABI); err != nil {
+// 		return err
+// 	}
+// 	if err := ValidateTokenDecimal(chain, copyState, tokenAddr, contractABI); err != nil {
+// 		return err
+// 	}
+// 	return nil
+// }
 
 // make sure that balance of token is at slot 0
 // make sure that minFee of token is at slot 1

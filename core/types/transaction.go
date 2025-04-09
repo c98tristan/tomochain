@@ -33,14 +33,14 @@ import (
 //go:generate gencodec -type txdata -field-override txdataMarshaling -out gen_tx_json.go
 
 var (
-	ErrInvalidSig               = errors.New("invalid transaction v, r, s values")
-	errNoSigner                 = errors.New("missing signing methods")
-	skipNonceDestinationAddress = map[string]bool{
-		common.TomoXAddr:                         true,
-		common.TradingStateAddr:                  true,
-		common.TomoXLendingAddress:               true,
-		common.TomoXLendingFinalizedTradeAddress: true,
-	}
+	ErrInvalidSig = errors.New("invalid transaction v, r, s values")
+	errNoSigner   = errors.New("missing signing methods")
+	// skipNonceDestinationAddress = map[string]bool{
+	// 	common.TomoXAddr:                         true,
+	// 	common.TradingStateAddr:                  true,
+	// 	common.TomoXLendingAddress:               true,
+	// 	common.TomoXLendingFinalizedTradeAddress: true,
+	// }
 )
 
 // deriveSigner makes a *best* guess about which signer to use.
@@ -341,15 +341,15 @@ func (tx *Transaction) IsLendingFinalizedTradeTransaction() bool {
 	return true
 }
 
-func (tx *Transaction) IsSkipNonceTransaction() bool {
-	if tx.To() == nil {
-		return false
-	}
-	if skip := skipNonceDestinationAddress[tx.To().String()]; skip {
-		return true
-	}
-	return false
-}
+// func (tx *Transaction) IsSkipNonceTransaction() bool {
+// 	if tx.To() == nil {
+// 		return false
+// 	}
+// 	if skip := skipNonceDestinationAddress[tx.To().String()]; skip {
+// 		return true
+// 	}
+// 	return false
+// }
 
 func (tx *Transaction) IsSigningTransaction() bool {
 	if tx.To() == nil {
@@ -411,28 +411,28 @@ func (tx *Transaction) IsVotingTransaction() (bool, *common.Address) {
 	return b, nil
 }
 
-func (tx *Transaction) IsTomoXApplyTransaction() bool {
-	if tx.To() == nil {
-		return false
-	}
+// func (tx *Transaction) IsTomoXApplyTransaction() bool {
+// 	if tx.To() == nil {
+// 		return false
+// 	}
 
-	if tx.To().String() != common.TomoXListingSMC.String() {
-		return false
-	}
+// 	if tx.To().String() != common.TomoXListingSMC.String() {
+// 		return false
+// 	}
 
-	method := common.ToHex(tx.Data()[0:4])
+// 	method := common.ToHex(tx.Data()[0:4])
 
-	if method != common.TomoXApplyMethod {
-		return false
-	}
+// 	if method != common.TomoXApplyMethod {
+// 		return false
+// 	}
 
-	// 4 bytes for function name
-	// 32 bytes for 1 parameter
-	if len(tx.Data()) != (32 + 4) {
-		return false
-	}
-	return true
-}
+// 	// 4 bytes for function name
+// 	// 32 bytes for 1 parameter
+// 	if len(tx.Data()) != (32 + 4) {
+// 		return false
+// 	}
+// 	return true
+// }
 
 func (tx *Transaction) IsTomoZApplyTransaction() bool {
 	if tx.To() == nil {

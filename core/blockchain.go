@@ -291,9 +291,9 @@ func (bc *BlockChain) getProcInterrupt() bool {
 	return atomic.LoadInt32(&bc.procInterrupt) == 1
 }
 
-func (bc *BlockChain) addTomoxDb(tomoxDb ethdb.TomoxDatabase) {
-	bc.tomoxDb = tomoxDb
-}
+// func (bc *BlockChain) addTomoxDb(tomoxDb ethdb.TomoxDatabase) {
+//     bc.tomoxDb = tomoxDb
+// }
 
 // loadLastState loads the last known chain state from the database. This method
 // assumes that the chain manager mutex is held.
@@ -649,7 +649,7 @@ func (bc *BlockChain) repair(head **types.Block) error {
 				// 		return nil
 				// 	}
 				// } else {
-				// 	return nil
+				return nil
 				// }
 			}
 		} else {

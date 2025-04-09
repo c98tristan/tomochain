@@ -876,14 +876,14 @@ func (env *Work) commitTransactions(mux *event.TypeMux, balanceFee map[common.Ad
 			}
 		}
 		// validate balance slot, token decimal for TomoX
-		if tx.IsTomoXApplyTransaction() {
-			copyState, _ := bc.State()
-			if err := core.ValidateTomoXApplyTransaction(bc, nil, copyState, common.BytesToAddress(tx.Data()[4:])); err != nil {
-				log.Debug("TomoXApply: invalid token", "token", common.BytesToAddress(tx.Data()[4:]).Hex())
-				txs.Pop()
-				continue
-			}
-		}
+		// if tx.IsTomoXApplyTransaction() {
+		// 	copyState, _ := bc.State()
+		// 	if err := core.ValidateTomoXApplyTransaction(bc, nil, copyState, common.BytesToAddress(tx.Data()[4:])); err != nil {
+		// 		log.Debug("TomoXApply: invalid token", "token", common.BytesToAddress(tx.Data()[4:]).Hex())
+		// 		txs.Pop()
+		// 		continue
+		// 	}
+		// }
 
 		if gp.Gas() < params.TxGas && tx.Gas() > 0 {
 			log.Trace("Not enough gas for further transactions", "gp", gp)
@@ -914,11 +914,11 @@ func (env *Work) commitTransactions(mux *event.TypeMux, balanceFee map[common.Ad
 		// Start executing the transaction
 		env.state.Prepare(tx.Hash(), common.Hash{}, env.tcount)
 
-		nonce := env.state.GetNonce(from)
-		if nonce != tx.Nonce() && !tx.IsSkipNonceTransaction() {
-			log.Trace("Skipping account with special transaction invalid nonce", "sender", from, "nonce", nonce, "tx nonce ", tx.Nonce(), "to", tx.To())
-			continue
-		}
+		// nonce := env.state.GetNonce(from)
+		// if nonce != tx.Nonce() && !tx.IsSkipNonceTransaction() {
+		// 	log.Trace("Skipping account with special transaction invalid nonce", "sender", from, "nonce", nonce, "tx nonce ", tx.Nonce(), "to", tx.To())
+		// 	continue
+		// }
 		err, logs, tokenFeeUsed, gas := env.commitTransaction(balanceFee, tx, bc, coinbase, gp)
 		switch err {
 		case core.ErrNonceTooLow:
@@ -991,14 +991,14 @@ func (env *Work) commitTransactions(mux *event.TypeMux, balanceFee map[common.Ad
 			}
 		}
 		// validate balance slot, token decimal for TomoX
-		if tx.IsTomoXApplyTransaction() {
-			copyState, _ := bc.State()
-			if err := core.ValidateTomoXApplyTransaction(bc, nil, copyState, common.BytesToAddress(tx.Data()[4:])); err != nil {
-				log.Debug("TomoXApply: invalid token", "token", common.BytesToAddress(tx.Data()[4:]).Hex())
-				txs.Pop()
-				continue
-			}
-		}
+		// if tx.IsTomoXApplyTransaction() {
+		// 	copyState, _ := bc.State()
+		// 	if err := core.ValidateTomoXApplyTransaction(bc, nil, copyState, common.BytesToAddress(tx.Data()[4:])); err != nil {
+		// 		log.Debug("TomoXApply: invalid token", "token", common.BytesToAddress(tx.Data()[4:]).Hex())
+		// 		txs.Pop()
+		// 		continue
+		// 	}
+		// }
 
 		// Error may be ignored here. The error has already been checked
 		// during transaction acceptance is the transaction pool.

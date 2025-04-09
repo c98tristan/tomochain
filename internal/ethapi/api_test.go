@@ -31,7 +31,7 @@ import (
 	"math/big"
 	"os"
 	"path/filepath"
-	"slices"
+	"sort"
 	"testing"
 	"time"
 )
@@ -318,8 +318,8 @@ func newAccounts(n int) (accounts []Account) {
 		addr := crypto.PubkeyToAddress(key.PublicKey)
 		accounts = append(accounts, Account{key: key, addr: addr})
 	}
-	slices.SortFunc(accounts, func(a, b Account) int {
-		return a.addr.Cmp(b.addr)
+	sort.Slice(accounts, func(i, j int) bool {
+		return accounts[i].addr.Cmp(accounts[j].addr) < 0
 	})
 	return accounts
 }
